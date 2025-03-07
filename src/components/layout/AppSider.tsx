@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Card, Layout, List, Statistic, Typography} from "antd";
 import {ArrowUpOutlined, ArrowDownOutlined} from '@ant-design/icons';
+import {fakeFetchCrypto, fetchAssets} from '../../api'
 
 const siderStyle: React.CSSProperties = {
     padding: '1rem'
@@ -14,7 +15,62 @@ const data = [
     'Los Angeles battles huge wildfires.',
 ];
 
+interface CryptoData {
+    result: CryptoItem[];
+}
+
+interface CryptoItem {
+    id: string;
+    icon: string;
+    name: string;
+    symbol: string;
+    rank: number;
+    price: number;
+    priceBtc: number;
+    volume: number;
+    marketCap: number;
+    availableSupply: number;
+    totalSupply: number;
+    fullyDilutedValuation: number;
+    priceChange1h: number;
+    priceChange1d: number;
+    priceChange1w: number;
+    redditUrl?: string;
+    websiteUrl?: string;
+    twitterUrl?: string;
+    contractAddress?: string;
+    decimals?: number;
+    explorers: string[];
+}
+
+interface CryptoAsset {
+    id: string;
+    amount: number;
+    price: number;
+    date: Date;
+}
+
 const AppSider: React.FC = () => {
+
+    const [loading, setLoading] = useState(false)
+    const [crypto, setCrypto] = useState<CryptoItem[]>([])
+    const [assets, setAssets] = useState<CryptoAsset[]>([])
+
+    useEffect(() => {
+        async function preload() {
+            setLoading(true)
+
+            const {result} = await fakeFetchCrypto()
+            const assets = await fetchAssets()
+
+            setCrypto(result)
+            setAssets(assets)
+
+            setLoading(false)
+        }
+        preload()
+    }, [])
+
     return (
         <Layout.Sider width="25%" style={siderStyle}>
             <Card style={{marginBottom: '1rem'}}>

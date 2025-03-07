@@ -59,6 +59,7 @@ export const cryptoData = {
                 "https://3xpl.com/ethereum"
             ]
         }
+    ]
 }
 
 export const cryptoAssets = [
