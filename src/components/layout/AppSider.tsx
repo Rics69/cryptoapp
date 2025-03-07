@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Card, Layout, List, Statistic, Typography, Spin} from "antd";
 import {ArrowUpOutlined, ArrowDownOutlined} from '@ant-design/icons';
 import {fakeFetchCrypto, fetchAssets} from '../../api'
+import {percentDifference} from "../../utils.ts";
 
 const siderStyle: React.CSSProperties = {
     padding: '1rem'
@@ -64,7 +65,17 @@ const AppSider: React.FC = () => {
             const assets = await fetchAssets()
 
             setCrypto(result)
-            setAssets(assets)
+            setAssets(assets.map(asset => {
+                const coin: CryptoItem | undefined = result.find(c => c.id === asset.id)
+                if (!coin) return asset
+                return {
+                    grow: asset.price < coin.price,
+                    growPercent: percentDifference(asset.price, coin.price),
+                    totalAmount: asset.amount * coin.price,
+                    totalProfit:  asset.amount * coin.price - asset.amount * asset.price,
+                    ...asset
+                }
+            }))
 
             setLoading(false)
         }
