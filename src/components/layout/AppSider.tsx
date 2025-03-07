@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Card, Layout, List, Statistic, Typography} from "antd";
+import {Card, Layout, List, Statistic, Typography, Spin} from "antd";
 import {ArrowUpOutlined, ArrowDownOutlined} from '@ant-design/icons';
 import {fakeFetchCrypto, fetchAssets} from '../../api'
 
@@ -70,6 +70,10 @@ const AppSider: React.FC = () => {
         }
         preload()
     }, [])
+
+    if (loading) {
+        return <Spin fullscreen />
+    }
 
     return (
         <Layout.Sider width="25%" style={siderStyle}>
