@@ -93,7 +93,7 @@ const AppSider: React.FC = () => {
                            value={11.28}
                            precision={2}
                            valueStyle={{color: '#3f8600'}}
-                           prefix={<ArrowUpOutlined/>}
+                           prefix={<ArrowDownOutlined/>}
                            suffix="%"/>
                 <List
                     size='small'
@@ -111,7 +111,7 @@ const AppSider: React.FC = () => {
                     value={9.3}
                     precision={2}
                     valueStyle={{color: '#cf1322'}}
-                    prefix={<ArrowDownOutlined/>}
+                    prefix={<ArrowUpOutlined/>}
                     suffix="%"
                 />
             </Card>
