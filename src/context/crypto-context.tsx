@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useEffect, useState} from "react";
+import {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {fakeFetchCrypto, fetchAssets} from "../api.ts";
 import {percentDifference} from "../utils.ts";
 
@@ -86,3 +86,7 @@ export function CryptoContextProvider({children} : {children: ReactNode}) {
 }
 
 export default CryptoContext
+
+export function useCrypto() {
+    return useContext(CryptoContext)
+}
