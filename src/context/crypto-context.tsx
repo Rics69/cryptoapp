@@ -1,10 +1,6 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, ReactNode, useEffect, useState} from "react";
 import {fakeFetchCrypto, fetchAssets} from "../api.ts";
 import {percentDifference} from "../utils.ts";
-
-interface CryptoData {
-    result: CryptoItem[];
-}
 
 interface CryptoItem {
     id: string;
@@ -41,13 +37,19 @@ interface CryptoAsset {
     totalProfit?: number,
 }
 
-const CryptoContext = createContext({
+interface CryptoContextType {
+    assets: CryptoAsset[],
+    crypto: CryptoItem[],
+    loading: boolean
+}
+
+const CryptoContext = createContext<CryptoContextType>({
     assets: [],
     crypto: [],
     loading: false
 })
 
-export function CryptoContextProvider({children}) {
+export function CryptoContextProvider({children} : {children: ReactNode}) {
     const [loading, setLoading] = useState(false)
     const [crypto, setCrypto] = useState<CryptoItem[]>([])
     const [assets, setAssets] = useState<CryptoAsset[]>([])
