@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Layout, Select, Space} from "antd";
 import {useCrypto} from "../../context/crypto-context.tsx";
 
@@ -13,6 +13,7 @@ const headerStyle: React.CSSProperties = {
 };
 
 const AppHeader: React.FC = () => {
+    const [header, setHeader] = useState(false)
     const { crypto  } = useCrypto()
 
     const handleSelect = (value: string) => {
