@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Button, Layout, Select, Space} from "antd";
 import {useCrypto} from "../../context/crypto-context.tsx";
 
@@ -13,11 +13,14 @@ const headerStyle: React.CSSProperties = {
 };
 
 const AppHeader: React.FC = () => {
-    const [header, setHeader] = useState(false)
-    const { crypto  } = useCrypto()
+    const { crypto } = useCrypto()
 
     const handleSelect = (value: string) => {
         console.log(value)
+    }
+
+    const addNewCoin = () => {
+
     }
 
     return <Layout.Header style={headerStyle}>
@@ -37,7 +40,7 @@ const AppHeader: React.FC = () => {
                 </Space>
             )}
         />
-        <Button type="primary">Add Asset</Button>
+        <Button onClick={addNewCoin} type="primary">Add Asset</Button>
     </Layout.Header>
 }
 
