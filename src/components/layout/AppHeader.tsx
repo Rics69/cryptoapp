@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, Select, Space} from "antd";
+import {Button, Layout, Modal, Select, Space} from "antd";
 import {useCrypto} from "../../context/crypto-context.tsx";
+import CoinInfoModal from "../CoinInfoModal.tsx";
 
 const headerStyle: React.CSSProperties = {
     width: '100%',
@@ -12,8 +13,35 @@ const headerStyle: React.CSSProperties = {
     alignItems: 'center'
 };
 
+interface CryptoItem {
+    id: string;
+    icon: string;
+    name: string;
+    symbol: string;
+    rank: number;
+    price: number;
+    priceBtc: number;
+    volume: number;
+    marketCap: number;
+    availableSupply: number;
+    totalSupply: number;
+    fullyDilutedValuation: number;
+    priceChange1h: number;
+    priceChange1d: number;
+    priceChange1w: number;
+    redditUrl?: string;
+    websiteUrl?: string;
+    twitterUrl?: string;
+    contractAddress?: string;
+    decimals?: number;
+    explorers: string[];
+}
+
+
 const AppHeader: React.FC = () => {
     const [select, setSelect] = useState(false)
+    const [coin, setCoin] = useState<CryptoItem | null>(null)
+    const [modal, setModal] = useState(false)
     const {crypto} = useCrypto()
 
     useEffect(() => {
@@ -27,7 +55,9 @@ const AppHeader: React.FC = () => {
     }, [])
 
     const handleSelect = (value: string) => {
-        console.log(value)
+        const selectedCoin = crypto.find(c => c.id === value) || null
+        setCoin(selectedCoin)
+        setModal(true)
     }
 
     return <Layout.Header style={headerStyle}>
@@ -49,6 +79,9 @@ const AppHeader: React.FC = () => {
             )}
         />
         <Button type="primary">Add Asset</Button>
+        <Modal open={modal} onCancel={() => setModal(false)} footer={null}>
+            <CoinInfoModal coin={coin}/>
+        </Modal>
     </Layout.Header>
 }
 
