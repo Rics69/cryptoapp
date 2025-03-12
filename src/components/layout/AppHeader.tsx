@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Button, Layout, Modal, Select, Space} from "antd";
+import {Button, Layout, Modal, Select, Space, Drawer} from "antd";
 import {useCrypto} from "../../context/crypto-context.tsx";
 import CoinInfoModal from "../CoinInfoModal.tsx";
+import AddAssetForm from "../AddAssetForm.tsx";
 
 const headerStyle: React.CSSProperties = {
     width: '100%',
@@ -41,6 +42,7 @@ interface CryptoItem {
 const AppHeader: React.FC = () => {
     const [select, setSelect] = useState(false)
     const [coin, setCoin] = useState<CryptoItem | null>(null)
+    const [drawer, setDrawer] = useState(false)
     const [modal, setModal] = useState(false)
     const {crypto} = useCrypto()
 
@@ -78,10 +80,14 @@ const AppHeader: React.FC = () => {
                 </Space>
             )}
         />
-        <Button type="primary">Add Asset</Button>
+        <Button onClick={() => setDrawer(true)} type="primary">Add Asset</Button>
         <Modal open={modal} onCancel={() => setModal(false)} footer={null}>
             <CoinInfoModal coin={coin}/>
         </Modal>
+
+        <Drawer width={600} title="Add Asset" onClose={() => setDrawer(false)} open={drawer}>
+            <AddAssetForm/>
+        </Drawer>
     </Layout.Header>
 }
 
