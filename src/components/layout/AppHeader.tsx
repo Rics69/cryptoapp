@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Layout, Select, Space} from "antd";
 import {useCrypto} from "../../context/crypto-context.tsx";
 
@@ -13,22 +13,30 @@ const headerStyle: React.CSSProperties = {
 };
 
 const AppHeader: React.FC = () => {
-    const { crypto } = useCrypto()
+    const [select, setSelect] = useState(false)
+    const {crypto} = useCrypto()
+
+    useEffect(() => {
+        const keypress = (event) => {
+            if (event.key === '/') {
+                setSelect(prev => !prev)
+            }
+        }
+        document.addEventListener('keypress', keypress)
+        return () => document.removeEventListener('keypress', keypress)
+    }, [])
 
     const handleSelect = (value: string) => {
         console.log(value)
     }
 
-    const addNewCoin = () => {
-
-    }
-
     return <Layout.Header style={headerStyle}>
         <Select
-            style={{ width: 250 }}
+            style={{width: 250}}
+            open={select}
             onSelect={handleSelect}
+            onClick={() => setSelect((prev) => !prev)}
             value="press / to open"
-            optionLabelProp="label"
             options={crypto.map(coin => ({
                 label: coin.name,
                 value: coin.id,
@@ -36,11 +44,11 @@ const AppHeader: React.FC = () => {
             }))}
             optionRender={(option) => (
                 <Space>
-                    <img style={{width: 20}} src={option.data.icon} alt={option.data.label} /> {option.data.label}
+                    <img style={{width: 20}} src={option.data.icon} alt={option.data.label}/> {option.data.label}
                 </Space>
             )}
         />
-        <Button onClick={addNewCoin} type="primary">Add Asset</Button>
+        <Button type="primary">Add Asset</Button>
     </Layout.Header>
 }
 
