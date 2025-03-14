@@ -1,10 +1,48 @@
 import React, {useState} from "react";
-import {Select, Space} from "antd";
+import {Button, Checkbox, Divider, Flex, Form, FormProps, Input, InputNumber, Select, Space, Typography} from "antd";
 import {useCrypto} from "../context/crypto-context.tsx";
+
+interface CryptoItem {
+    id: string;
+    icon: string;
+    name: string;
+    symbol: string;
+    rank: number;
+    price: number;
+    priceBtc: number;
+    volume: number;
+    marketCap: number;
+    availableSupply: number;
+    totalSupply: number;
+    fullyDilutedValuation: number;
+    priceChange1h: number;
+    priceChange1d: number;
+    priceChange1w: number;
+    redditUrl?: string;
+    websiteUrl?: string;
+    twitterUrl?: string;
+    contractAddress?: string;
+    decimals?: number;
+    explorers: string[];
+}
+
+type FieldType = {
+    username?: string;
+    password?: string;
+    remember?: string;
+};
+
+const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    console.log('Success:', values);
+};
+
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+};
 
 const AddAssetForm = () => {
     const {crypto} = useCrypto()
-    const [coin, setCoin] = useState(null)
+    const [coin, setCoin] = useState<CryptoItem | null>(null)
 
     if (!coin) {
         return (
@@ -26,7 +64,45 @@ const AddAssetForm = () => {
         )
     }
 
-    return <form>Form Asset</form>
+    return <Form
+        name="basic"
+        labelCol={{span: 4}}
+        wrapperCol={{span: 10}}
+        style={{maxWidth: 600}}
+        initialValues={{remember: true}}
+        onFinish={onFinish}
+    >
+        <Flex align="center">
+            <img src={coin?.icon} alt={coin?.name} style={{width: 40, marginRight: 10}}/>
+            <Typography.Title level={2} style={{margin: 0}}>{coin?.name}</Typography.Title>
+        </Flex>
+        <Divider/>
+        <Form.Item<FieldType>
+            label="Amount"
+            name="amount"
+            rules={[{required: true, type: 'number', min: 0, message: 'Please input your username!'}]}
+        >
+            <InputNumber/>
+        </Form.Item>
+
+        <Form.Item<FieldType>
+            label="Password"
+            name="password"
+            rules={[{required: true, message: 'Please input your password!'}]}
+        >
+            <Input.Password/>
+        </Form.Item>
+
+        <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
+            <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item label={null}>
+            <Button type="primary" htmlType="submit">
+                Submit
+            </Button>
+        </Form.Item>
+    </Form>
 }
 
 export default AddAssetForm
