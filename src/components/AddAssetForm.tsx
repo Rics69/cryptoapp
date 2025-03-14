@@ -1,5 +1,18 @@
 import React, {useState} from "react";
-import {Button, Checkbox, Divider, Flex, Form, FormProps, Input, InputNumber, Select, Space, Typography} from "antd";
+import {
+    Button,
+    Checkbox,
+    DatePicker,
+    Divider,
+    Flex,
+    Form,
+    FormProps,
+    Input,
+    InputNumber,
+    Select,
+    Space,
+    Typography
+} from "antd";
 import {useCrypto} from "../context/crypto-context.tsx";
 
 interface CryptoItem {
@@ -36,8 +49,14 @@ const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values);
 };
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+const validateMessages = {
+    required: '${label} is required!',
+    types: {
+        number: '${label} in not valid number!'
+    },
+    number: {
+        range: '${label} must be between ${min} and ${max}'
+    }
 };
 
 const AddAssetForm = () => {
@@ -71,6 +90,7 @@ const AddAssetForm = () => {
         style={{maxWidth: 600}}
         initialValues={{remember: true}}
         onFinish={onFinish}
+        validateMessages={validateMessages}
     >
         <Flex align="center">
             <img src={coin?.icon} alt={coin?.name} style={{width: 40, marginRight: 10}}/>
@@ -80,26 +100,35 @@ const AddAssetForm = () => {
         <Form.Item<FieldType>
             label="Amount"
             name="amount"
-            rules={[{required: true, type: 'number', min: 0, message: 'Please input your username!'}]}
+            rules={[{required: true, type: 'number', min: 0}]}
         >
-            <InputNumber/>
+            <InputNumber style={{width: '100%'}}/>
         </Form.Item>
 
         <Form.Item<FieldType>
-            label="Password"
-            name="password"
-            rules={[{required: true, message: 'Please input your password!'}]}
+            label="Price"
+            name="price"
         >
-            <Input.Password/>
+            <InputNumber disabled style={{width: '100%'}}/>
         </Form.Item>
 
-        <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
-            <Checkbox>Remember me</Checkbox>
+        <Form.Item<FieldType>
+            label="Date & Time"
+            name="date"
+        >
+            <DatePicker showTime/>
         </Form.Item>
 
-        <Form.Item label={null}>
+        <Form.Item<FieldType>
+            label="Total"
+            name="total"
+        >
+            <InputNumber disabled style={{width: '100%'}}/>
+        </Form.Item>
+
+        <Form.Item>
             <Button type="primary" htmlType="submit">
-                Submit
+                Add Asset
             </Button>
         </Form.Item>
     </Form>
