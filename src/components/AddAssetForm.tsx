@@ -8,12 +8,13 @@ import {
     Form,
     FormProps,
     Input,
-    InputNumber,
+    InputNumber, Result,
     Select,
     Space,
     Typography
 } from "antd";
 import {useCrypto} from "../context/crypto-context.tsx";
+import CoinInfo from "./CoinInfo.tsx";
 
 interface CryptoItem {
     id: string;
@@ -55,10 +56,26 @@ const validateMessages = {
     }
 };
 
-const AddAssetForm = () => {
+const AddAssetForm = ({onClose}) => {
     const [form] = Form.useForm()
     const {crypto} = useCrypto()
     const [coin, setCoin] = useState<CryptoItem | null>(null)
+    const [submitted, setSubmitted] = useState(false)
+
+    if (submitted) {
+        return (
+            <Result
+                status="success"
+                title="New Asset Added"
+                subTitle={`Added ${42} of ${coin.name} by price ${24}`}
+                extra={[
+                    <Button type="primary" key="console" onClick={onClose}>
+                        Close
+                    </Button>
+                ]}
+            />
+        )
+    }
 
     if (!coin) {
         return (
@@ -82,6 +99,7 @@ const AddAssetForm = () => {
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
         console.log('Success:', values);
+        setSubmitted(true)
     };
 
     const handleAmountChange = (value) => {
@@ -110,10 +128,7 @@ const AddAssetForm = () => {
         onFinish={onFinish}
         validateMessages={validateMessages}
     >
-        <Flex align="center">
-            <img src={coin?.icon} alt={coin?.name} style={{width: 40, marginRight: 10}}/>
-            <Typography.Title level={2} style={{margin: 0}}>{coin?.name}</Typography.Title>
-        </Flex>
+        <CoinInfo coin={coin} withSymbol={false}/>
         <Divider/>
         <Form.Item<FieldType>
             label="Amount"
