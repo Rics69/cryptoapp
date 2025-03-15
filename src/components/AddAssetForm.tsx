@@ -1,20 +1,17 @@
-import React, {useState} from "react";
+import {useRef, useState} from "react";
 import {
     Button,
-    Checkbox,
     DatePicker,
     Divider,
-    Flex,
     Form,
     FormProps,
-    Input,
     InputNumber, Result,
     Select,
-    Space,
-    Typography
+    Space
 } from "antd";
 import {useCrypto} from "../context/crypto-context.tsx";
 import CoinInfo from "./CoinInfo.tsx";
+import {cryptoAssets} from "../data.ts";
 
 interface CryptoItem {
     id: string;
@@ -41,10 +38,22 @@ interface CryptoItem {
 }
 
 type FieldType = {
-    username?: string;
-    password?: string;
-    remember?: string;
+    amount?: number;
+    price?: number;
+    date?: Date;
+    total?: number;
 };
+
+interface CryptoAsset {
+    id: string;
+    amount: number;
+    price: number;
+    date: Date;
+    grow?: boolean,
+    growPercent?: number,
+    totalAmount?: number,
+    totalProfit?: number,
+}
 
 const validateMessages = {
     required: '${label} is required!',
@@ -58,16 +67,17 @@ const validateMessages = {
 
 const AddAssetForm = ({onClose}) => {
     const [form] = Form.useForm()
-    const {crypto} = useCrypto()
+    const {crypto, addAsset} = useCrypto()
     const [coin, setCoin] = useState<CryptoItem | null>(null)
     const [submitted, setSubmitted] = useState(false)
+    const assetRef = useRef()
 
     if (submitted) {
         return (
             <Result
                 status="success"
                 title="New Asset Added"
-                subTitle={`Added ${42} of ${coin.name} by price ${24}`}
+                subTitle={`Added ${assetRef.current.amount} of ${coin.name} by price ${assetRef.current.price}`}
                 extra={[
                     <Button type="primary" key="console" onClick={onClose}>
                         Close
@@ -98,8 +108,15 @@ const AddAssetForm = ({onClose}) => {
     }
 
     const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-        console.log('Success:', values);
+        const newAsset = {
+            id: coin.id,
+            amount: values.amount,
+            price: values.price,
+            date: values.date?.$d ?? new Date()
+        }
+        assetRef.current = newAsset
         setSubmitted(true)
+        addAsset(newAsset as CryptoAsset)
     };
 
     const handleAmountChange = (value) => {

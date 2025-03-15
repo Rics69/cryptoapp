@@ -42,7 +42,7 @@ interface CryptoItem {
 const AppHeader: React.FC = () => {
     const [select, setSelect] = useState(false)
     const [coin, setCoin] = useState<CryptoItem | null>(null)
-    const [drawer, setDrawer] = useState(true)
+    const [drawer, setDrawer] = useState(false)
     const [modal, setModal] = useState(false)
     const {crypto} = useCrypto()
 
