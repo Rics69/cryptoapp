@@ -45,10 +45,6 @@ type FieldType = {
     remember?: string;
 };
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
-};
-
 const validateMessages = {
     required: '${label} is required!',
     types: {
@@ -60,6 +56,7 @@ const validateMessages = {
 };
 
 const AddAssetForm = () => {
+    const [form] = Form.useForm()
     const {crypto} = useCrypto()
     const [coin, setCoin] = useState<CryptoItem | null>(null)
 
@@ -83,7 +80,26 @@ const AddAssetForm = () => {
         )
     }
 
+    const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+        console.log('Success:', values);
+    };
+
+    const handleAmountChange = (value) => {
+        const price = form.getFieldValue('price')
+        form.setFieldsValue({
+            total: +(value*price).toFixed(2 )
+        })
+    }
+
+    const handlePriceChange = (value) => {
+        const amount = form.getFieldValue('amount')
+        form.setFieldsValue({
+            total: +(amount*value).toFixed(2 )
+        })
+    }
+
     return <Form
+        form={form}
         name="basic"
         labelCol={{span: 4}}
         wrapperCol={{span: 10}}
@@ -104,14 +120,14 @@ const AddAssetForm = () => {
             name="amount"
             rules={[{required: true, type: 'number', min: 0}]}
         >
-            <InputNumber style={{width: '100%'}}/>
+            <InputNumber placeholder="Enter coin amount" onChange={handleAmountChange} style={{width: '100%'}}/>
         </Form.Item>
 
         <Form.Item<FieldType>
             label="Price"
             name="price"
         >
-            <InputNumber disabled style={{width: '100%'}}/>
+            <InputNumber onChange={handlePriceChange} style={{width: '100%'}}/>
         </Form.Item>
 
         <Form.Item<FieldType>
