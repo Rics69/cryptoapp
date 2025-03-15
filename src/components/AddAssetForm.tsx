@@ -88,7 +88,9 @@ const AddAssetForm = () => {
         labelCol={{span: 4}}
         wrapperCol={{span: 10}}
         style={{maxWidth: 600}}
-        initialValues={{remember: true}}
+        initialValues={{
+            price: +coin.price.toFixed(2)
+        }}
         onFinish={onFinish}
         validateMessages={validateMessages}
     >
