@@ -35,6 +35,7 @@ interface CryptoAsset {
     growPercent?: number,
     totalAmount?: number,
     totalProfit?: number,
+    name?: string
 }
 
 interface CryptoContextType {
@@ -65,6 +66,7 @@ export function CryptoContextProvider({children} : {children: ReactNode}) {
                 growPercent: percentDifference(asset.price, coin.price),
                 totalAmount: asset.amount * coin.price,
                 totalProfit: asset.amount * coin.price - asset.amount * asset.price,
+                name: coin.name,
                 ...asset
             }
         })
