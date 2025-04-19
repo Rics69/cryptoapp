@@ -42,7 +42,7 @@ const CoinInfoModal = ({coin}: CoinProps) => {
                 {coin.marketCap}$
             </Typography.Paragraph>}
             {coin?.contractAddress && <Typography.Paragraph>
-                <Typography.Text strong>Contract Address: </Typography.Text>
+                <Typography.Text strong>Contract Addr: </Typography.Text>
                 {coin.contractAddress}
             </Typography.Paragraph>}
         </>
