@@ -117,6 +117,9 @@ const AddAssetForm = ({onClose}) => {
         assetRef.current = newAsset
         setSubmitted(true)
         addAsset(newAsset as CryptoAsset)
+
+        const saved = JSON.parse(localStorage.getItem('cryptoAssets') || '[]')
+        localStorage.setItem('cryptoAssets', JSON.stringify([...saved, newAsset]))
     };
 
     const handleAmountChange = (value) => {

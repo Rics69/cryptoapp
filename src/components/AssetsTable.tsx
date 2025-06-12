@@ -1,4 +1,4 @@
-import {Table, TableColumnsType, TableProps} from "antd";
+import {Table, TableColumnsType} from "antd";
 import {useCrypto} from "../context/crypto-context.tsx";
 
 interface DataType {

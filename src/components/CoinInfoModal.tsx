@@ -1,4 +1,4 @@
-import {Divider, Flex, Tag, Typography} from "antd";
+import {Divider, Tag, Typography} from "antd";
 import CoinInfo from "./CoinInfo.tsx";
 
 interface CoinProps {

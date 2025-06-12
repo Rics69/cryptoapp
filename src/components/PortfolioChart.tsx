@@ -5,7 +5,7 @@ import {useCrypto} from "../context/crypto-context.tsx";
 ChartJs.register(ArcElement, Tooltip, Legend);
 
 const PortfolioChart = () => {
-    const {assets, crypto} = useCrypto()
+    const {assets} = useCrypto()
 
     const data = {
         labels: assets.map(a => a.name),

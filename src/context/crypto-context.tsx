@@ -77,10 +77,11 @@ export function CryptoContextProvider({children} : {children: ReactNode}) {
             setLoading(true)
 
             const {result} = await fakeFetchCrypto()
-            const assets = await fetchAssets()
+            const localAssets = JSON.parse(localStorage.getItem('cryptoAssets') || '[]')
+            // const assets = await fetchAssets()
 
             setCrypto(result)
-            setAssets(mapAssets(assets, result))
+            setAssets(mapAssets(localAssets, result))
 
             setLoading(false)
         }
